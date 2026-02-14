@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Valentine</title>
 
-  <!-- Neo둥근모 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@latest/neodgm_webfont.css">
 
   <style>
@@ -62,7 +61,7 @@
       gap: 12px;
       justify-content: center;
       position: relative;
-      height: 60px; /* 조금 더 공간 줘서 잘 튀게 */
+      height: 60px;
       margin-top: 6px;
     }
 
@@ -124,7 +123,6 @@
 
     mainImg.src = IMG_QUESTION;
 
-    // No 버튼 위치/속도 설정
     let noIsAbsolute = false;
     let lastJump = 0;
 
@@ -132,7 +130,6 @@
       if (noIsAbsolute) return;
       noIsAbsolute = true;
 
-      // 버튼이 갑자기 튀지 않게 현재 위치 기준으로 absolute로 고정
       const rect = noBtn.getBoundingClientRect();
       const areaRect = btnArea.getBoundingClientRect();
 
@@ -143,7 +140,7 @@
 
     function jumpNoButton(intensity = 1) {
       const now = Date.now();
-      if (now - lastJump < 60) return; // 너무 과한 연타 방지(그래도 빠름)
+      if (now - lastJump < 60) return; 
       lastJump = now;
 
       ensureAbsolute();
@@ -155,12 +152,10 @@
       const maxX = Math.max(0, areaRect.width - bw);
       const maxY = Math.max(0, areaRect.height - bh);
 
-      // 미친듯이: 랜덤 폭을 크게 + 가끔은 더 크게
-      const chaos = (Math.random() < 0.25) ? 1.8 : 1.2; // 25% 확률로 더 크게 튐
+      const chaos = (Math.random() < 0.25) ? 1.8 : 1.2;
       const x = Math.random() * maxX * intensity * chaos;
       const y = Math.random() * maxY * intensity * chaos;
 
-      // clamp (범위 안으로)
       const clampedX = Math.min(maxX, Math.max(0, x));
       const clampedY = Math.min(maxY, Math.max(0, y));
 
@@ -168,31 +163,26 @@
       noBtn.style.top = clampedY + "px";
     }
 
-    // ✅ “가까이 오기만 해도” 도망 (진짜 미친 버전)
     btnArea.addEventListener("mousemove", (e) => {
       const noRect = noBtn.getBoundingClientRect();
       const mx = e.clientX;
       const my = e.clientY;
 
-      // 마우스-버튼 거리 계산
       const cx = noRect.left + noRect.width / 2;
       const cy = noRect.top + noRect.height / 2;
       const dist = Math.hypot(mx - cx, my - cy);
 
-      // 거리 임계값: 가까우면 점프(거리 작을수록 더 자주)
       if (dist < 140) jumpNoButton(1.2);
       if (dist < 90)  jumpNoButton(1.5);
       if (dist < 55)  jumpNoButton(2.0);
     });
 
-    // hover/클릭도 추가로 튐
     noBtn.addEventListener("mouseenter", () => jumpNoButton(2.2));
     noBtn.addEventListener("mousedown", (e) => {
       e.preventDefault();
       jumpNoButton(2.6);
     });
 
-    // No 클릭 "성공"하면 이미지/문구 변경 (근데 거의 불가능 ㅋㅋ)
     noBtn.addEventListener("click", () => {
       mainImg.src = IMG_NO;
       title.textContent = "No is temporarily unavailable 🥺";
@@ -200,7 +190,6 @@
       jumpNoButton(2.2);
     });
 
-    // Yes는 정상 엔딩
     yesBtn.addEventListener("click", () => {
       mainImg.src = IMG_YES;
       title.textContent = "Yay!! 💖";
@@ -210,3 +199,4 @@
   </script>
 </body>
 </html>
+
